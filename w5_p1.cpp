@@ -35,6 +35,23 @@ int main(int argc, char** argv)
 		//       - lines that start with "#" are considered comments and should be ignored
 		//       - if the file cannot be open, print a message to standard error console and
 		//                exit from application with error code "AppErrors::CannotOpenFile"
+		std::ifstream file(argv[1]);
+		if (!file) {
+			std::cout << "Cannot open the file" << argv[1] << std::endl;
+			exit(AppErrors::CannotOpenFile);
+		}
+
+		std::string line;
+		size_t count = 0;
+		do {
+			std::getline(file, line);
+			if (line[0] != '#') {
+				if (count < 7) {
+					library[count++] = Book(line);
+				}
+			}
+		} while (file);
+
 	}
 	else
 	{
@@ -52,28 +69,38 @@ int main(int argc, char** argv)
 	//       - if the book was published in UK between 1990 and 1999 (inclussive),
 	//            multiply the price with "gbpToCadRate" and save the new price in the book object
 
-
+	auto updatePrice = [=](Book& bk) {
+		if (bk.country() == "US") {
+			bk.price() *= usdToCadRate;
+		}
+		else if (bk.country() == "UK" && (bk.year() >= 1990 && bk.year() <= 1999)) {
+			bk.price() *= gbpToCadRate;
+		}
+		return bk.price();
+	};
 
 	std::cout << "-----------------------------------------\n";
 	std::cout << "The library content\n";
 	std::cout << "-----------------------------------------\n";
 	// TODO: iterate over the library and print each book to the screen
 
-
+	for (auto& book : library)
+		std::cout << book;
 
 	std::cout << "-----------------------------------------\n\n";
 
 	// TODO: iterate over the library and update the price of each book
 	//         using the lambda defined above.
-
-
+	for (auto& book : library) {
+		updatePrice(book);
+	}
 
 	std::cout << "-----------------------------------------\n";
 	std::cout << "The library content (updated prices)\n";
 	std::cout << "-----------------------------------------\n";
 	// TODO: iterate over the library and print each book to the screen
-
-
+	for (auto& book : library)
+		std::cout << book;
 
 	std::cout << "-----------------------------------------\n";
 

@@ -6,21 +6,20 @@ using namespace std;
 
 namespace sdds {
 	class Book {
-		string _author{};
-		string _title{};
-		string _country{};
-		size_t _year{};
-		double _price{};
-		string _des{};
-
+		string b_author{};
+		string b_title{};
+		string b_country{};
+		size_t b_year{};
+		double b_price{};
+		string b_des{};
 	public:
-		Book() = default;	// A default constructor.
-		const string& title() const;	// a query that returns the title of the book
-		const string& country() const;	// a query that returns the publication country
-		const size_t& year() const;	// a query that returns the publication year
-		double& price();	// a function that returns the price **by reference
-		Book(const string& strBook);	// a constructor that receives a reference to an unmodifiable string that contains information about the book
+		Book() = default;
+		const string& title() const;
+		const string& country() const;
+		const size_t& year() const;
+		double& price();
+		Book(const string& strBook);
+		friend ostream& operator<<(ostream& os, Book& src);
 	};
 }
-
 #endif
